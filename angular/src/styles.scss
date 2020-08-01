@@ -1,0 +1,238 @@
+@import "./scss/mixins";
+@import "./scss/variables";
+.dropdown-toggle::after {
+  display: contents !important;
+}
+
+.extraMargin {
+  margin: 90px 25%;
+}
+.centerText {
+  text-align: center;
+  width: 100%;
+}
+.newPostBtn {
+  color: $yellow-900;
+  background-color: $yellow-500;
+  border: solid 1px $yellow-600;
+  margin-top: 0;
+  margin-bottom: 0;
+  @include sbd_btn;
+  @extend .centerText;
+}
+
+// render magrin,pading : VD  m-r-5, p-r-10
+@for $space from 0 through 300 {
+  @each $side in $sides {
+    .m-#{str-slice($side, 0, 1)}-#{$space} {
+      margin-#{$side}: #{$space}px !important;
+    }
+
+    .p-#{str-slice($side, 0, 1)}-#{$space} {
+      padding-#{$side}: #{$space}px !important;
+    }
+  }
+}
+
+// render width, height : VD  w-5, h-5
+@for $space from 0 through 300 {
+  .w-#{$space} {
+    width: #{$space}px !important;
+  }
+  .h-#{$space} {
+    height: #{$space}px !important;
+  }
+}
+
+.modal-body {
+  padding: 25px;
+}
+
+/* Table */
+body .ui-paginator {
+  background-color: #f4f4f4;
+  padding: 0.5em !important;
+  border: none !important;
+}
+
+.ui-paginator .ui-paginator-pages .ui-paginator-page {
+  border-radius: 50% !important;
+  background-color: #edecf8 !important;
+  color: #5867dd !important;
+  margin: 2px !important;
+}
+
+.ui-paginator .ui-paginator-pages .ui-paginator-page.ui-state-active {
+  background: #716aca !important;
+  color: #fff !important;
+}
+
+.ui-multiselect {
+  line-height: 1.5rem !important;
+}
+
+.ui-paginator .ui-paginator-current {
+  float: left !important;
+}
+
+// Bá» boder table
+td,
+th {
+  border: none !important;
+}
+
+.fixed-modal-height {
+  max-height: calc(100vh - 215px);
+  overflow-y: auto;
+}
+
+.fixed-modal-height-full {
+  height: calc(100vh - 215px);
+  overflow-y: auto;
+}
+
+.text-ok {
+  font-weight: normal;
+}
+
+body .ui-dropdown .ui-dropdown-label {
+  padding-right: 2.5rem !important;
+}
+
+.ui-autocomplete-dropdown {
+  height: 38.9px !important;
+}
+
+.ui-datepicker-trigger.ui-button {
+  height: 40.8px !important;
+}
+
+.width-btn-footer {
+  min-width: 70px !important;
+}
+
+.btn-save-background {
+  background-color: #5867dd !important;
+  border-color: #5867dd !important;
+}
+.btn-cancle-background {
+  background: white !important;
+  border-color: #ebedf2 !important;
+  color: $text-color !important;
+}
+
+.body {
+  font-family: Quicksand, sans-serif !important;
+}
+
+body .ui-widget {
+  font-family: Quicksand, sans-serif !important;
+  font-size: 16px !important;
+  text-decoration: none;
+}
+
+body .ui-inputtext {
+  line-height: 1.5rem !important;
+  font-size: 16px !important;
+}
+
+.ui-button {
+  padding: 0.25rem !important;
+}
+
+.sidebar {
+  overflow-y: unset !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.ui-megamenu-vertical {
+  width: 100% !important;
+  // height: calc(100vh - 300px) !important;
+  position: relative !important;
+}
+
+.main-sidebar {
+  overflow-y: unset;
+}
+
+.ui-megamenu {
+  border: none !important;
+}
+
+.visibility-hidden {
+  visibility: hidden !important;
+}
+
+.ui-megamenu .ui-menuitem-icon {
+  width: 20px;
+}
+
+.trang-thai {
+  border-radius: 20px;
+  padding: 0.25em;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.3px;
+
+  // Khá»Ÿi táº¡o
+  &.hieu-luc-1 {
+    background-color: #c8e6c9;
+    color: #256029;
+  }
+
+  // Hiá»‡u lá»±c
+  &.hieu-luc-2 {
+    background-color: #b3e5fc;
+    color: #23547b;
+  }
+
+  // Háº¿t hiá»‡u lá»±c
+  &.hieu-luc-3 {
+    background-color: #ffcdd2;
+    color: #c63737;
+  }
+
+  // Khá»Ÿi táº¡o
+  &.duyet-1 {
+    background-color: #c8e6c9;
+    color: #256029;
+  }
+
+  // Chá» duyá»‡t
+  &.duyet-2 {
+    background-color: #fff251;
+    color: #4a4505;
+  }
+
+  // ÄÃ£ duyá»‡t
+  &.duyet-3 {
+    background-color: #b3e5fc;
+    color: #23547b;
+  }
+
+  // KhÃ´ng duyá»‡t
+  &.duyet-4 {
+    background-color: #ffcdd2;
+    color: #c63737;
+  }
+}
+
+body a {
+  cursor: pointer !important;
+}
+
+// Hiá»ƒn thá»‹ cuá»™n ngang table
+.hien-thi-cuon-ngang {
+  overflow-x: auto !important;
+}
+
+// Hiá»ƒn thá»‹ cuá»™n ngang khi Ä‘iá»u kiá»‡n nhá» hÆ¡n 3 báº£n ghi
+.ui-table-scrollable-body {
+  min-height: 150px !important;
+}
+
+.back {
+  background-color: transparent !important;
+}
