@@ -9,14 +9,16 @@ using DbEntities;
 
 namespace MyProject.EntityFrameworkCore
 {
-     public class MyProjectDbContext : AbpZeroDbContext<Tenant, Role, User, MyProjectDbContext>
-     {
-          /* Define a DbSet for each entity of the application */
-          public DbSet<Demo_File> Demo_File { get; set; }
-          public DbSet<Demo> Demo { get; set; }
-          public MyProjectDbContext(DbContextOptions<MyProjectDbContext> options)
-              : base(options)
-          {
-          }
-     }
+    public class MyProjectDbContext : AbpZeroDbContext<Tenant, Role, User, MyProjectDbContext>
+    {
+        /* Define a DbSet for each entity of the application */
+        public DbSet<HoSoKhachHang> HoSoKhachHang { get; set; }
+        public DbSet<Demo_File> Demo_File { get; set; }
+        public DbSet<Demo> Demo { get; set; }
+
+        public MyProjectDbContext(DbContextOptions<MyProjectDbContext> options)
+            : base(options)
+        {
+        }
+    }
 }

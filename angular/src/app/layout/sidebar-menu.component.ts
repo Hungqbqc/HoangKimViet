@@ -42,6 +42,9 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
       visible: this.isGrantedAny('Pages.Demos'),
     },
     {
+      label: 'Hồ sơ', icon: 'fas fa-list', routerLink: '/app/main/ho-so/ho-so-khach-hang',
+    },
+    {
       label: 'Người dùng', icon: 'fas fa-users', routerLink: '/app/users',
       visible: this.isGranted('Pages.Users')
     },

@@ -13,6 +13,10 @@ import { RouterModule } from '@angular/router';
                 path: 'danh-muc',
                 loadChildren: () => import('./main-module/danh-muc/danh-muc.module').then((m) => m.DanhMucModule),
             },    
+            {
+                path: 'ho-so',
+                loadChildren: () => import('./main-module/ho-so/ho-so.module').then((m) => m.HoSoModule),
+            },    
         ]),
     ],
     exports: [RouterModule],

@@ -1,0 +1,75 @@
+<form
+  [formGroup]="form"
+  class="form-horizontal"
+  autocomplete="off"
+  (ngSubmit)="save()"
+>
+  <abp-modal-header
+    [title]="id ? (isView ? 'Xem Hồ sơ' : 'Sửa Hồ sơ') : 'Thêm mới Hồ sơ'"
+    (onCloseClick)="bsModalRef.hide()"
+  ></abp-modal-header>
+  <div class="modal-body fixed-modal-height">
+    <p-accordion [multiple]="true">
+      <p-accordionTab header="Chứng mình thư - Thẻ căn cước" [selected]="true">
+        <!-- <div class="row ui-fluid">
+          <div class="col-md-6">
+            <div class="form-group">
+              <dft-label-validation
+                [form]="form"
+                [control]="'TextBox1'"
+                [title]="'TextBox1 *'"
+              >
+              </dft-label-validation>
+              <input
+                required
+                type="text"
+                id="TextBox1"
+                name="TextBox1"
+                maxlength="50"
+                formControlName="TextBox1"
+                pInputText
+              />
+              {{ form.controls.TextBox1.value }}
+              <dft-validation [control]="form.get('TextBox1')"></dft-validation>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <dft-label-validation
+                [form]="form"
+                [control]="'TextBox2'"
+                [title]="'TextBox2 *'"
+              >
+              </dft-label-validation>
+              <input
+                required
+                type="text"
+                id="TextBox2"
+                name="TextBox2"
+                maxlength="50"
+                formControlName="TextBox2"
+                pInputText
+              />
+              {{ form.controls.TextBox2.value }}
+              <dft-validation [control]="form.get('TextBox2')"></dft-validation>
+            </div>
+          </div>
+        </div> -->
+      </p-accordionTab>
+      <p-accordionTab header="Giấy khai sinh" >
+      </p-accordionTab>
+      <p-accordionTab header="Sổ hộ khẩu" >
+      </p-accordionTab>
+      <p-accordionTab header="Bằng cấp" >
+      </p-accordionTab>
+      <p-accordionTab header="Hộ chiếu" >
+      </p-accordionTab>
+      <p-accordionTab header="Sơ yếu lý lịch" >
+      </p-accordionTab>
+      <p-accordionTab header="Bảo hiểm" >
+      </p-accordionTab>
+    </p-accordion>
+  </div>
+  <abp-modal-footer [cancelDisabled]="saving" (onCancelClick)="close()">
+  </abp-modal-footer>
+</form>
