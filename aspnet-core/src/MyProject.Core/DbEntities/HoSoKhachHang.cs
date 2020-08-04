@@ -11,6 +11,7 @@ namespace DbEntities
     public class HoSoKhachHang : FullAuditedEntity, IMayHaveTenant
     {
         public int? TenantId { get; set; }
+        public virtual int? LoaiGiayTo { get; set; }
         public virtual string SoCmt { get; set; }
         public virtual string HoTenCmt { get; set; }
         public virtual DateTime? NgaySinhCmt { get; set; }
@@ -21,7 +22,7 @@ namespace DbEntities
         public virtual string DacDiemNhanDangCmt { get; set; }
         public virtual DateTime? NgayCapCmt { get; set; }
         public virtual string NoiCapCmt { get; set; }
-        public virtual int? GioiTinhCmt { get; set; }
+        public virtual string NguoiKyCmt { get; set; }
         public virtual string SoCanCuoc { get; set; }
         public virtual string HoVaTenCanCuoc { get; set; }
         public virtual DateTime? NgaySinhCanCuoc { get; set; }
@@ -62,9 +63,10 @@ namespace DbEntities
         public virtual DateTime? NgayKyGKS { get; set; }
         public virtual string ChuTichKyGKS { get; set; }
         public virtual string HoTenChuHoSHK { get; set; }
-        public virtual string SoNhaSHK { get; set; }
-        public virtual string DuongPhoSHK { get; set; }
+        public virtual int? SoThanhVienSHK { get; set; }
+        public virtual string DiaChiSHK { get; set; }
         public virtual string BangCap { get; set; }
+        public virtual string SoHoChieu { get; set; }
         public virtual string HoTenSYLL { get; set; }
         public virtual int? GioiTinhSYLL { get; set; }
         public virtual DateTime? NgaySinhSYLL { get; set; }

@@ -3,7 +3,7 @@ import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/app-component-base';
 import { Table } from 'primeng/table';
 import { FormGroup, FormControl } from '@angular/forms';
-import { DemoForView, DemoGetAllInputDto, DemoServiceProxy, DemoDto } from '@shared/service-proxies/service-proxies';
+import { DemoForView, DemoGetAllInputDto, DemoServiceProxy, DemoDto, HoSoKhachHangServiceProxy, HoSoKhachHangDto } from '@shared/service-proxies/service-proxies';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { HttpClient } from '@angular/common/http';
 import { FileDownloadService } from '@shared/file-download.service';
@@ -28,25 +28,29 @@ export class HoSoComponent extends AppComponentBase implements OnInit {
   isActive = false;
   loading = true;
   exporting = false;
-  hoSos: DemoForView[] = [];
+  hoSoKhachHangs: HoSoKhachHangDto[] = [];
   input: DemoGetAllInputDto;
   totalCount = 0;
   config = {
     animated: false
   };
-
+  arrGioiTinh = [
+    { id: 1, displayName: 'Nam' },
+    { id: 2, displayName: 'Nữ' },
+    { id: 3, displayName: 'Khác' }
+  ];
   constructor(
     injector: Injector,
     private _modalService: BsModalService,
-    private _demoService: DemoServiceProxy,
     public http: HttpClient,
     private _fileDownloadService: FileDownloadService,
+    private hoSoKhachHang: HoSoKhachHangServiceProxy,
 
   ) { super(injector); }
 
   ngOnInit(): void {
     this.khoiTaoForm();
-    this.create();
+    this.themMoi();
   }
 
   khoiTaoForm() {
@@ -57,24 +61,24 @@ export class HoSoComponent extends AppComponentBase implements OnInit {
   }
 
   getDataPage(lazyLoad?: LazyLoadEvent) {
-    // this.loading = true;
-    // this._demoService.getAll(
-    //   this.keyword,
-    //   lazyLoad ? lazyLoad.first : this.table.first,
-    //   lazyLoad ? lazyLoad.rows : this.table.rows,
-    // ).pipe(finalize(() => { this.loading = false; }))
-    //   .subscribe(result => {
-    //     this.demos = result.items;
-    //     this.totalCount = result.totalCount;
-    //   });
+    this.loading = true;
+    this.hoSoKhachHang.getAll(
+      undefined,
+      lazyLoad ? lazyLoad.first : this.table.first,
+      lazyLoad ? lazyLoad.rows : this.table.rows,
+    ).pipe(finalize(() => { this.loading = false; }))
+      .subscribe(result => {
+        this.hoSoKhachHangs = result.items;
+        this.totalCount = result.totalCount;
+      });
   }
 
-  create(id?: number) {
-    this.showCreateOrEditDialog(id);
+  themMoi(id?: number, isView = false) {
+    this.showCreateOrEditDialog(id, isView);
   }
 
-  view(id?: number) {
-    // this.showCreateOrEditDemoDialog(id, true);
+  xem(id?: number) {
+    this.showCreateOrEditDialog(id, true);
   }
 
   exportToExcel() {
@@ -94,24 +98,28 @@ export class HoSoComponent extends AppComponentBase implements OnInit {
     // this.showImportDemoDialog();
   }
 
-  protected delete(demo: DemoDto) {
-    // this.swal.fire({
-    //   title: 'Bạn chắc chắn không?',
-    //   text: 'Demo ' + demo.ma + ' sẽ bị xóa.',
-    //   icon: 'warning',
-    //   showCancelButton: true,
-    //   confirmButtonColor: this.confirmButtonColor,
-    //   cancelButtonColor: this.cancelButtonColor,
-    //   cancelButtonText: this.cancelButtonText,
-    //   confirmButtonText: this.confirmButtonText
-    // }).then((result) => {
-    //   if (result.value) {
-    //     this._demoService.delete(demo.id).subscribe(() => {
-    //       this.showDeleteMessage();
-    //       this.getDataPage();
-    //     });
-    //   }
-    // });
+  layGioiTinh(id) {
+    return this.arrGioiTinh.find(e => e.id === id).displayName;
+  }
+
+  protected xoa(item: HoSoKhachHangDto) {
+    this.swal.fire({
+      title: 'Bạn chắc chắn không?',
+      text: 'Hồ sơ ' + item.hoTenGKS + ' sẽ bị xóa.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: this.confirmButtonColor,
+      cancelButtonColor: this.cancelButtonColor,
+      cancelButtonText: this.cancelButtonText,
+      confirmButtonText: this.confirmButtonText
+    }).then((result) => {
+      if (result.value) {
+        this.hoSoKhachHang.delete(item.id).subscribe(() => {
+          this.showDeleteMessage();
+          this.getDataPage();
+        });
+      }
+    });
   }
 
   private showCreateOrEditDialog(id?: number, isView = false): void {
