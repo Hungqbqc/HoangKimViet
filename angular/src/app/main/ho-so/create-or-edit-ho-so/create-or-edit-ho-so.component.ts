@@ -1,15 +1,9 @@
 import { Component, OnInit, Output, EventEmitter, Injector } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { LookupTableDto, DemoCreateInput, Demo_File, LookupTableServiceProxy, DemoServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AppConsts } from '@shared/AppConsts';
 import { HttpClient } from '@angular/common/http';
-import { FileDownloadService } from '@shared/file-download.service';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { forkJoin } from 'rxjs';
-import { CommonComponent } from '@shared/dft/components/common.component';
-import { finalize } from 'rxjs/operators';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-create-or-edit-ho-so',
@@ -24,12 +18,20 @@ export class CreateOrEditHoSoComponent extends AppComponentBase
   id: number;
   isView: boolean;
   linkServer = AppConsts.remoteServiceBaseUrl;
+  arrChungMinhThu = [
+    { id: 1, displayName: 'Chứng minh thư' },
+    { id: 2, displayName: 'Thẻ căn cước' }
+  ];
+
+  arrGioiTinh = [
+    { id: 1, displayName: 'Nam' },
+    { id: 2, displayName: 'Nữ' },
+    { id: 3, displayName: 'Khác' }
+  ];
   constructor(
     injector: Injector,
     private fb: FormBuilder,
     public http: HttpClient,
-    private _fileDownloadService: FileDownloadService,
-    private _lookupTableService: LookupTableServiceProxy,
     public bsModalRef: BsModalRef,
   ) {
     super(injector);
@@ -79,32 +81,77 @@ export class CreateOrEditHoSoComponent extends AppComponentBase
 
   khoiTaoForm() {
     this.form = this.fb.group({
-      ChungMinhThu: this.fb.group({
-        SoCmt: ['', Validators.required],
-        HoTenCmt: ['', Validators.required],
-        NgaySinhCmt: ['', Validators.required],
-        NguyenQuanCmt: ['', Validators.required],
-        NoiDKHKThuongTruCmt: ['', Validators.required],
-        DanTocCmt: ['', Validators.required],
-        TonGiaoCmt: ['', Validators.required],
-        DacDiemNhanDangCmt: ['', Validators.required],
-        NgayCapCmt: ['', Validators.required],
-        NoiCapCmt: ['', Validators.required],
-        GioiTinhCmt: ['', Validators.required],
+      chonLoaiCmt: [{ id: 1, displayName: 'Chứng minh thư' }],
+      chungMinhThu: this.fb.group({
+        soCmt: ['', Validators.required],
+        hoTenCmt: ['', Validators.required],
+        ngaySinhCmt: ['', Validators.required],
+        nguyenQuanCmt: ['', Validators.required],
+        noiDKHKThuongTruCmt: ['', Validators.required],
+        danTocCmt: ['', Validators.required],
+        tonGiaoCmt: ['', Validators.required],
+        dacDiemNhanDangCmt: ['', Validators.required],
+        ngayCapCmt: ['', Validators.required],
+        noiCapCmt: ['', Validators.required],
+        nguoiKyCmt: ['', Validators.required],
       }),
-      TheCanCuoc: this.fb.group({
+      theCanCuoc: this.fb.group({
+        soCanCuoc: ['', Validators.required],
+        hoVaTenCanCuoc: ['', Validators.required],
+        ngaySinhCanCuoc: ['', Validators.required],
+        gioiTinhCanCuoc: ['', Validators.required],
+        quocTichCanCuoc: ['', Validators.required],
+        queQuanCanCuoc: ['', Validators.required],
+        noiThuongTruCanCuoc: ['', Validators.required],
+        giaTriDenCanCuoc: ['', Validators.required],
+        dacDiemNhanDangCanCuoc: ['', Validators.required],
+        ngayCapCanCuoc: ['', Validators.required],
+        noiCapCanCuoc: ['', Validators.required],
+        nguoiCapCanCuoc: ['', Validators.required],
       }),
-      GiayKhaiSinh: this.fb.group({
+      giayKhaiSinh: this.fb.group({
+        xaPhuongGKS: ['', Validators.required],
+        quanHuyenGKS: ['', Validators.required],
+        tinhThanhGKS: ['', Validators.required],
+        mauGKS: ['', Validators.required],
+        soGKS: ['', Validators.required],
+        quyenSoGKS: ['', Validators.required],
+        hoTenGKS: ['', Validators.required],
+        gioiTinhGKS: ['', Validators.required],
+        ngaySinhGKS: ['', Validators.required],
+        ngaySinhBangChuGKS: ['', Validators.required],
+        noiSinhGKS: ['', Validators.required],
+        danTocGKS: ['', Validators.required],
+        quocTichGKS: ['', Validators.required],
+        queQuanGKS: ['', Validators.required],
+        hoTenChaGKS: ['', Validators.required],
+        danTocChaGKS: ['', Validators.required],
+        quocTichChaGKS: ['', Validators.required],
+        hoTenMeGKS: ['', Validators.required],
+        danTocMeGKS: ['', Validators.required],
+        quocTichMeGKS: ['', Validators.required],
+        hoTenNguoiDiKhaiSinhGKS: ['', Validators.required],
+        quanHeVoiNguoiDuocKhaiSinhGKS: ['', Validators.required],
+        ngayDangKyGKS: ['', Validators.required],
+        canBoTuPhapKyGKS: ['', Validators.required],
+        chuTichThayMatKyGKS: ['', Validators.required],
+        ngayKyGKS: ['', Validators.required],
+        chuTichKyGKS: ['', Validators.required],
       }),
-      SoHoKhau: this.fb.group({
+      soHoKhau: this.fb.group({
+        soCanCuoc: ['', Validators.required],
       }),
-      BangCap: this.fb.group({
+      bangCap: this.fb.group({
+        bangCap: ['', Validators.required],
       }),
-      HoCHieu: this.fb.group({
+      hoChieu: this.fb.group({
+        soCanCuoc: ['', Validators.required],
       }),
-      SoYeuLyLich: this.fb.group({
+      soYeuLyLich: this.fb.group({
+        soCanCuoc: ['', Validators.required],
       }),
       BaoHiem: this.fb.group({
+        soCanCuoc: ['', Validators.required],
       }),
     });
   }
@@ -151,11 +198,5 @@ export class CreateOrEditHoSoComponent extends AppComponentBase
   }
 
 
-  private setValueForEdit() {
 
-  }
-
-  private getValueForSave() {
-
-  }
 }

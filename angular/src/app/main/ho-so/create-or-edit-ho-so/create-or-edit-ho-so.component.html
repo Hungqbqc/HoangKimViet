@@ -1,72 +1,306 @@
-<form
-  [formGroup]="form"
-  class="form-horizontal"
-  autocomplete="off"
-  (ngSubmit)="save()"
->
-  <abp-modal-header
-    [title]="id ? (isView ? 'Xem Hồ sơ' : 'Sửa Hồ sơ') : 'Thêm mới Hồ sơ'"
-    (onCloseClick)="bsModalRef.hide()"
-  ></abp-modal-header>
+<form [formGroup]="form" class="form-horizontal" autocomplete="off" (ngSubmit)="save()">
+  <abp-modal-header [title]="id ? (isView ? 'Xem Hồ sơ' : 'Sửa Hồ sơ') : 'Thêm mới Hồ sơ'"
+    (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
   <div class="modal-body fixed-modal-height">
     <p-accordion [multiple]="true">
       <p-accordionTab header="Chứng mình thư - Thẻ căn cước" [selected]="true">
-        <!-- <div class="row ui-fluid">
+        <div class="row ui-fluid">
           <div class="col-md-6">
             <div class="form-group">
-              <dft-label-validation
-                [form]="form"
-                [control]="'TextBox1'"
-                [title]="'TextBox1 *'"
-              >
+              <dft-label-validation [title]="'Chọn loại giấy tờ'">
               </dft-label-validation>
-              <input
-                required
-                type="text"
-                id="TextBox1"
-                name="TextBox1"
-                maxlength="50"
-                formControlName="TextBox1"
-                pInputText
-              />
-              {{ form.controls.TextBox1.value }}
-              <dft-validation [control]="form.get('TextBox1')"></dft-validation>
+              <p-dropdown formControlName="chonLoaiCmt" [options]="arrChungMinhThu" optionLabel="displayName"
+                [showClear]="false">
+              </p-dropdown>
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <dft-label-validation
-                [form]="form"
-                [control]="'TextBox2'"
-                [title]="'TextBox2 *'"
-              >
-              </dft-label-validation>
-              <input
-                required
-                type="text"
-                id="TextBox2"
-                name="TextBox2"
-                maxlength="50"
-                formControlName="TextBox2"
-                pInputText
-              />
-              {{ form.controls.TextBox2.value }}
-              <dft-validation [control]="form.get('TextBox2')"></dft-validation>
+        </div>
+        <div *ngIf="form.get('chonLoaiCmt').value?.id == 1" formGroupName="chungMinhThu">
+          <div class="row ui-fluid">
+            <div class="col-md-3">
+              <div class="form-group">
+                <dft-label-validation [control]="form.get('chungMinhThu').get('soCmt')" [title]="'Số *'">
+                </dft-label-validation>
+                <input required type="text" id="soCmt" name="soCmt" maxlength="9" formControlName='soCmt' pInputText />
+                <dft-validation [control]="form.get('chungMinhThu').get('soCmt')"></dft-validation>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <dft-label-validation [control]="form.get('chungMinhThu').get('hoTenCmt')" [title]="'Họ tên *'">
+                </dft-label-validation>
+                <input required type="text" id="hoTenCmt" name="hoTenCmt" formControlName='hoTenCmt' pInputText />
+                <dft-validation [control]="form.get('chungMinhThu').get('hoTenCmt')"></dft-validation>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <dft-label-validation [control]="form.get('chungMinhThu').get('ngaySinhCmt')" [title]="'Sinh ngày *'">
+                </dft-label-validation>
+                <p-calendar formControlName="ngaySinhCmt" [readonlyInput]="readonlyInput" showButtonBar="showButtonBar"
+                  [dateFormat]="dateFormatInput" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true"
+                  [yearRange]="yearRange">
+                </p-calendar>
+                <dft-validation [control]="form.get('chungMinhThu').get('ngaySinhCmt')">
+                </dft-validation>
+              </div>
             </div>
           </div>
-        </div> -->
+
+          <div class="row ui-fluid">
+            <div class="col-md-6">
+              <div class="form-group">
+                <dft-label-validation [control]="form.get('chungMinhThu').get('nguyenQuanCmt')"
+                  [title]="'Nguyên quán *'">
+                </dft-label-validation>
+                <br>
+                <textarea formControlName="nguyenQuanCmt" class="form-control" id="nguyenQuanCmt" rows="4"></textarea>
+                <dft-validation [control]="form.get('chungMinhThu').get('nguyenQuanCmt')">
+                </dft-validation>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <dft-label-validation [control]="form.get('chungMinhThu').get('noiDKHKThuongTruCmt')"
+                  [title]="'Nơi ĐKHK thường trú *'">
+                </dft-label-validation>
+                <br>
+                <textarea formControlName="noiDKHKThuongTruCmt" class="form-control" id="noiDKHKThuongTruCmt"
+                  rows="4"></textarea>
+                <dft-validation [control]="form.get('chungMinhThu').get('noiDKHKThuongTruCmt')">
+                </dft-validation>
+              </div>
+            </div>
+          </div>
+
+          <div class="row ui-fluid">
+            <div class="col-md-6">
+              <div class="form-group">
+                <dft-label-validation [control]="form.get('chungMinhThu').get('danTocCmt')" [title]="'Dân tộc *'">
+                </dft-label-validation>
+                <input required type="text" id="danTocCmt" name="danTocCmt" formControlName='danTocCmt' pInputText />
+                <dft-validation [control]="form.get('chungMinhThu').get('danTocCmt')"></dft-validation>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <dft-label-validation [control]="form.get('chungMinhThu').get('tonGiaoCmt')" [title]="'Tôn giáo *'">
+                </dft-label-validation>
+                <input required type="text" id="tonGiaoCmt" name="tonGiaoCmt" formControlName='tonGiaoCmt' pInputText />
+                <dft-validation [control]="form.get('chungMinhThu').get('tonGiaoCmt')"></dft-validation>
+              </div>
+            </div>
+          </div>
+
+          <div class="row ui-fluid">
+            <div class="col-md-6">
+              <div class="form-group">
+                <dft-label-validation [control]="form.get('chungMinhThu').get('dacDiemNhanDangCmt')"
+                  [title]="'Dấu vết riêng và dị hình *'">
+                </dft-label-validation>
+                <input required type="text" id="dacDiemNhanDangCmt" name="dacDiemNhanDangCmt"
+                  formControlName='dacDiemNhanDangCmt' pInputText />
+                <dft-validation [control]="form.get('chungMinhThu').get('dacDiemNhanDangCmt')">
+                </dft-validation>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <dft-label-validation [control]="form.get('chungMinhThu').get('ngayCapCmt')" [title]="'Ngày cấp *'">
+                </dft-label-validation>
+                <p-calendar formControlName="ngayCapCmt" [readonlyInput]="readonlyInput" showButtonBar="showButtonBar"
+                  [dateFormat]="dateFormatInput" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true"
+                  [yearRange]="yearRange">
+                </p-calendar>
+                <dft-validation [control]="form.get('chungMinhThu').get('ngayCapCmt')"></dft-validation>
+              </div>
+            </div>
+          </div>
+
+          <div class="row ui-fluid">
+            <div class="col-md-6">
+              <div class="form-group">
+                <dft-label-validation [control]="form.get('chungMinhThu').get('noiCapCmt')" [title]="'Nơi cấp *'">
+                </dft-label-validation>
+                <input required type="text" id="noiCapCmt" name="noiCapCmt" formControlName='noiCapCmt' pInputText />
+                <dft-validation [control]="form.get('chungMinhThu').get('noiCapCmt')"></dft-validation>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <dft-label-validation [control]="form.get('chungMinhThu').get('nguoiKyCmt')" [title]="'Người ký *'">
+                </dft-label-validation>
+                <input required type="text" id="nguoiKyCmt" name="nguoiKyCmt" formControlName='nguoiKyCmt' pInputText />
+                <dft-validation [control]="form.get('chungMinhThu').get('nguoiKyCmt')"></dft-validation>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div *ngIf="form.get('chonLoaiCmt').value?.id == 2" formGroupName="theCanCuoc">
+          <div class="row ui-fluid">
+            <div class="col-md-3">
+              <div class="form-group">
+                <dft-label-validation [control]="form.get('theCanCuoc').get('soCanCuoc')" [title]="'Số *'">
+                </dft-label-validation>
+                <input required type="text" id="soCanCuoc" name="soCanCuoc" maxlength="12" formControlName='soCanCuoc'
+                  pInputText />
+                <dft-validation [control]="form.get('theCanCuoc').get('soCanCuoc')"></dft-validation>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <dft-label-validation [control]="form.get('theCanCuoc').get('hoVaTenCanCuoc')" [title]="'Họ tên *'">
+                </dft-label-validation>
+                <input required type="text" id="hoVaTenCanCuoc" name="hoVaTenCanCuoc" formControlName='hoVaTenCanCuoc'
+                  pInputText />
+                <dft-validation [control]="form.get('theCanCuoc').get('hoVaTenCanCuoc')">
+                </dft-validation>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <dft-label-validation [control]="form.get('theCanCuoc').get('ngaySinhCanCuoc')"
+                  [title]="'Ngày, tháng, năm sinh *'">
+                </dft-label-validation>
+                <p-calendar formControlName="ngaySinhCanCuoc" [readonlyInput]="readonlyInput"
+                  showButtonBar="showButtonBar" [dateFormat]="dateFormatInput" [showIcon]="true" [monthNavigator]="true"
+                  [yearNavigator]="true" [yearRange]="yearRange">
+                </p-calendar>
+                <dft-validation [control]="form.get('theCanCuoc').get('ngaySinhCanCuoc')">
+                </dft-validation>
+              </div>
+            </div>
+          </div>
+
+          <div class="row ui-fluid">
+            <div class="col-md-6">
+              <div class="form-group">
+                <dft-label-validation [control]="form.get('theCanCuoc').get('gioiTinhCanCuoc')" [title]="'Giới tính *'">
+                </dft-label-validation>
+                <p-dropdown formControlName="gioiTinhCanCuoc" [options]="arrGioiTinh" optionLabel="displayName"
+                  [showClear]="false">
+                </p-dropdown>
+                <dft-validation [control]="form.get('theCanCuoc').get('gioiTinhCanCuoc')">
+                </dft-validation>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <dft-label-validation [control]="form.get('theCanCuoc').get('quocTichCanCuoc')" [title]="'Quốc tịch *'">
+                </dft-label-validation>
+                <input required type="text" id="quocTichCanCuoc" name="quocTichCanCuoc"
+                  formControlName='quocTichCanCuoc' pInputText />
+                <dft-validation [control]="form.get('theCanCuoc').get('quocTichCanCuoc')">
+                </dft-validation>
+              </div>
+            </div>
+          </div>
+
+          <div class="row ui-fluid">
+            <div class="col-md-6">
+              <div class="form-group">
+                <dft-label-validation [control]="form.get('theCanCuoc').get('queQuanCanCuoc')" [title]="'Quê quán *'">
+                </dft-label-validation>
+                <br>
+                <textarea formControlName="queQuanCanCuoc" class="form-control" id="queQuanCanCuoc" rows="4"></textarea>
+                <dft-validation [control]="form.get('theCanCuoc').get('queQuanCanCuoc')">
+                </dft-validation>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <dft-label-validation [control]="form.get('theCanCuoc').get('noiThuongTruCanCuoc')"
+                  [title]="'Nơi thường trú *'">
+                </dft-label-validation>
+                <br>
+                <textarea formControlName="noiThuongTruCanCuoc" class="form-control" id="noiThuongTruCanCuoc"
+                  rows="4"></textarea>
+                <dft-validation [control]="form.get('theCanCuoc').get('noiThuongTruCanCuoc')">
+                </dft-validation>
+              </div>
+            </div>
+          </div>
+
+          <div class="row ui-fluid">
+            <div class="col-md-6">
+              <div class="form-group">
+                <dft-label-validation [control]="form.get('theCanCuoc').get('giaTriDenCanCuoc')"
+                  [title]="'Có giá trị đến *'">
+                </dft-label-validation>
+                <p-calendar formControlName="giaTriDenCanCuoc" [readonlyInput]="readonlyInput"
+                  showButtonBar="showButtonBar" [dateFormat]="dateFormatInput" [showIcon]="true" [monthNavigator]="true"
+                  [yearNavigator]="true" [yearRange]="yearRange">
+                </p-calendar>
+                <dft-validation [control]="form.get('theCanCuoc').get('giaTriDenCanCuoc')">
+                </dft-validation>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <dft-label-validation [control]="form.get('theCanCuoc').get('dacDiemNhanDangCanCuoc')"
+                  [title]="'Đặc điểm nhận dạng *'">
+                </dft-label-validation>
+                <input required type="text" id="dacDiemNhanDangCanCuoc" name="dacDiemNhanDangCanCuoc"
+                  formControlName='dacDiemNhanDangCanCuoc' pInputText />
+                <dft-validation [control]="form.get('theCanCuoc').get('dacDiemNhanDangCanCuoc')">
+                </dft-validation>
+              </div>
+            </div>
+          </div>
+
+          <div class="row ui-fluid">
+            <div class="col-md-6">
+              <div class="form-group">
+                <dft-label-validation [control]="form.get('theCanCuoc').get('ngayCapCanCuoc')" [title]="'Ngày cấp *'">
+                </dft-label-validation>
+                <p-calendar formControlName="ngayCapCanCuoc" [readonlyInput]="readonlyInput"
+                  showButtonBar="showButtonBar" [dateFormat]="dateFormatInput" [showIcon]="true" [monthNavigator]="true"
+                  [yearNavigator]="true" [yearRange]="yearRange">
+                </p-calendar>
+                <dft-validation [control]="form.get('theCanCuoc').get('ngayCapCanCuoc')">
+                </dft-validation>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <dft-label-validation [control]="form.get('theCanCuoc').get('noiCapCanCuoc')" [title]="'Nơi cấp *'">
+                </dft-label-validation>
+                <input required type="text" id="noiCapCanCuoc" name="noiCapCanCuoc" formControlName='noiCapCanCuoc'
+                  pInputText />
+                <dft-validation [control]="form.get('theCanCuoc').get('noiCapCanCuoc')">
+                </dft-validation>
+              </div>
+            </div>
+          </div>
+
+          <div class="row ui-fluid">
+            <div class="col-md-6">
+              <div class="form-group">
+                <dft-label-validation [control]="form.get('theCanCuoc').get('nguoiCapCanCuoc')" [title]="'Người cấp *'">
+                </dft-label-validation>
+                <input required type="text" id="nguoiCapCanCuoc" name="nguoiCapCanCuoc"
+                  formControlName='nguoiCapCanCuoc' pInputText />
+                <dft-validation [control]="form.get('theCanCuoc').get('nguoiCapCanCuoc')">
+                </dft-validation>
+              </div>
+            </div>
+          </div>
+        </div>
       </p-accordionTab>
-      <p-accordionTab header="Giấy khai sinh" >
+      <p-accordionTab header="Giấy khai sinh">
       </p-accordionTab>
-      <p-accordionTab header="Sổ hộ khẩu" >
+      <p-accordionTab header="Sổ hộ khẩu">
       </p-accordionTab>
-      <p-accordionTab header="Bằng cấp" >
+      <p-accordionTab header="Bằng cấp">
       </p-accordionTab>
-      <p-accordionTab header="Hộ chiếu" >
+      <p-accordionTab header="Hộ chiếu">
       </p-accordionTab>
-      <p-accordionTab header="Sơ yếu lý lịch" >
+      <p-accordionTab header="Sơ yếu lý lịch">
       </p-accordionTab>
-      <p-accordionTab header="Bảo hiểm" >
+      <p-accordionTab header="Bảo hiểm">
       </p-accordionTab>
     </p-accordion>
   </div>
